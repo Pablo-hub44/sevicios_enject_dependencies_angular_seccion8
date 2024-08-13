@@ -1,5 +1,6 @@
+import { TasksServiceToken } from './../../../main';
 
-import { Component, ElementRef, viewChild } from '@angular/core';
+import { Component, ElementRef, Inject, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TasksService } from '../../services/tasks.service';
 
@@ -15,7 +16,7 @@ export class NewTaskComponent {
   // private tasksService: TasksService;
 
   //inyeccion de dependencias como parametro SI
-  constructor(private tasksService:  TasksService){
+  constructor(@Inject(TasksServiceToken) private tasksService:  TasksService){//antes TasksService pero estamos provando otra manera
     //aqui no va
     //this.tasksService = new TasksService();
   }

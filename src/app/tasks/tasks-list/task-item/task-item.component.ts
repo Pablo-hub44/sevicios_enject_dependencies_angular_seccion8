@@ -1,8 +1,9 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { Task, TaskStatus } from '../../task.model';
+import { Task, TASK_STATUS_OPTIONS, TaskStatus } from '../../task.model';
 import { TasksService } from '../../../services/tasks.service';
+import { TasksServiceToken } from '../../../../main';
 
 @Component({
   selector: 'app-task-item',
@@ -13,8 +14,11 @@ import { TasksService } from '../../../services/tasks.service';
 })
 export class TaskItemComponent {
   //otra forma de inyectar una dependencia
-  private tasksService = inject(TasksService);
-  
+  private tasksService = inject(TasksServiceToken);//antes TasksService
+
+  //traemos nuestros estatus inyectandolos
+  taskStatusOptions = inject(TASK_STATUS_OPTIONS);
+
   tasks = this.tasksService.tasks;
 
   task = input.required<Task>();

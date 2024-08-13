@@ -1,12 +1,17 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Task, TaskStatus } from '../tasks/task.model';
+import { LoggingService } from './logging.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TasksService {
 
-  //tasks =[];
+  //inyectamos otra dependencia a este sevice
+  private loggingService = inject(LoggingService);
+
+  //sin signal
+  //private tasks: Task[] = [];
 
   //con signal
   private _tasks = signal<Task[]>([]);
@@ -34,6 +39,7 @@ export class TasksService {
     this.tasks.update((oldTasks)=>{
       return [...oldTasks, newTask]//se crea una copia con lso datos actualizados
     })
+    this.loggingService.log('TAREA AGREGADA '+ taskData.title)
   }
 
 
@@ -46,9 +52,11 @@ export class TasksService {
     this._tasks.update((oldTask)=>{
       //iteramos en cada tarea
       return oldTask.map((task)=>{
-        return task.id === taskId ? {...task,status: newStatus }: task
+        return task.id === taskId ? {...task,status: newStatus }: task   //... destrcuturar, tambien para poner elementos al inicio del array
       })
     })
+
+    this.loggingService.log('ACTUALIZACION DE TAREA ESTATUS: '+ newStatus)
   }
 
 
